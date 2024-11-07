@@ -3,8 +3,14 @@ import express, { Request, Response } from 'express';
 var app = express();
 app.use(express.json());
 
+type User = {
+    id: number;
+    nome: string;
+    email: string;
+};
+
 let id = 0;
-let usuarios: { id: number, nome: string, email: string }[] = [];
+let usuarios: User[] = [];
 
 app.get('/', (req, res) => {
     res.send('Bem vindo ao curso de nodejs - tsc-watch');
@@ -27,6 +33,18 @@ app.post('/users', (req: Request, res: Response) => {
     res.send({ mesage: 'Usuário criado com sucesso!' });
 });
 
+app.put('/users/:id', (req: Request, res: Response) => {
+    let id = Number(req.params.id);
+    let user = req.body;
+
+    let index = usuarios.findIndex(u => u.id === id);
+
+    usuarios[index].nome = user.nome;
+    usuarios[index].email = user.email;
+
+    res.send('Usuário atualizado com sucesso!');
+});
+
 app.delete('/users/:id', (req: Request, res: Response) => {
     let id = Number(req.params.id);
     let index = usuarios.findIndex(u => u.id === id);
@@ -34,17 +52,6 @@ app.delete('/users/:id', (req: Request, res: Response) => {
     res.send('Usuário removido com sucesso!');
 });
 
-app.put('/users/:id', (req: Request, res: Response) => {
-    let id = Number(req.params.id);
-    let user = req.body;
-
-    let index = usuarios.findIndex(p => p.id === id);
-
-    usuarios[index].nome = user.nome;
-    usuarios[index].email = user.email;
-
-    res.send('Usuário atualizado com sucesso!');
-});
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
