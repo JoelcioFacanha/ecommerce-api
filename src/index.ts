@@ -27,6 +27,25 @@ app.post('/users', (req: Request, res: Response) => {
     res.send({ mesage: 'Usuário criado com sucesso!' });
 });
 
+app.delete('/users/:id', (req: Request, res: Response) => {
+    let id = Number(req.params.id);
+    let index = usuarios.findIndex(u => u.id === id);
+    usuarios.splice(index, 1);
+    res.send('Usuário removido com sucesso!');
+});
+
+app.put('/users/:id', (req: Request, res: Response) => {
+    let id = Number(req.params.id);
+    let user = req.body;
+
+    let index = usuarios.findIndex(p => p.id === id);
+
+    usuarios[index].nome = user.nome;
+    usuarios[index].email = user.email;
+
+    res.send('Usuário atualizado com sucesso!');
+});
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
