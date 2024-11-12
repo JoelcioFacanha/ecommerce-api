@@ -35,7 +35,7 @@ export class UserController {
 
         const usuarioSalvo = await getFirestore().collection("users").add(user)
 
-        res.send({ mesage: `Usuário ${usuarioSalvo.id} criado com sucesso!` });
+        res.status(201).send({ mesage: `Usuário ${usuarioSalvo.id} criado com sucesso!` });
     }
 
     static update(req: Request, res: Response) {
@@ -53,6 +53,6 @@ export class UserController {
     static async delete(req: Request, res: Response) {
         let userId = req.params.id;
         await getFirestore().collection('users').doc(userId).delete();
-        res.send('Usuário removido com sucesso!');
+        res.status(204).end();
     }
 }
