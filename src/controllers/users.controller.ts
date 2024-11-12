@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { getFirestore } from "firebase-admin/firestore";
 
 type User = {
     id: number;
@@ -6,43 +7,52 @@ type User = {
     email: string;
 };
 
-let id = 0;
-let usuarios: User[] = [];
-
 export class UserController {
-    static getAll(req: Request, res: Response) {
-        res.send(usuarios);
+    static async getAll(req: Request, res: Response) {
+        const snapshot = await getFirestore().collection('users').get();
+        const users = snapshot.docs.map(doc => {
+            return {
+                id: doc.id,
+                ...doc.data()
+            };
+        });
+
+        res.send(users);
     }
 
-    static getUserById(req: Request, res: Response) {
-        let userId = Number(req.params.id);
-        let user = usuarios.find(u => u.id === userId);
-        res.send(user);
+    static async getUserById(req: Request, res: Response) {
+        let userId = req.params.id;
+
+        let doc = await getFirestore().collection('users').doc(userId).get();
+        res.send({
+            id: doc.id,
+            ...doc.data()
+        });
     }
 
-    static save(req: Request, res: Response) {
+    static async save(req: Request, res: Response) {
         let user = req.body;
-        user.id = ++id;
-        usuarios.push(user);
-        res.send({ mesage: 'Usuário criado com sucesso!' });
+
+        const usuarioSalvo = await getFirestore().collection("users").add(user)
+
+        res.send({ mesage: `Usuário ${usuarioSalvo.id} criado com sucesso!` });
     }
 
     static update(req: Request, res: Response) {
-        let id = Number(req.params.id);
-        let user = req.body;
+        let userId = req.params.id;
+        let user = req.body as User;
 
-        let index = usuarios.findIndex(u => u.id === id);
+        getFirestore().collection('users').doc(userId).set({
+            nome: user.nome,
+            email: user.email
+        });
 
-        usuarios[index].nome = user.nome;
-        usuarios[index].email = user.email;
-
-        res.send('Usuário atualizado com sucesso!');
+        res.send({ message: 'Usuário atualizado com sucesso!' });
     }
 
-    static delete(req: Request, res: Response) {
-        let id = Number(req.params.id);
-        let index = usuarios.findIndex(u => u.id === id);
-        usuarios.splice(index, 1);
+    static async delete(req: Request, res: Response) {
+        let userId = req.params.id;
+        await getFirestore().collection('users').doc(userId).delete();
         res.send('Usuário removido com sucesso!');
     }
 }
