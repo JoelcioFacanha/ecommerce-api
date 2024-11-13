@@ -27,14 +27,13 @@ export class UserService {
         }
     }
 
-    async save(user: User): Promise<string> {
-        const usuarioSalvo = await getFirestore().collection("users").add(user)
-        return `Usuário ${usuarioSalvo.id} criado com sucesso!`;
+    async save(user: User) {
+        await getFirestore().collection("users").add(user)
     }
 
-    async update(userId: string, user: User): Promise<string> {
+    async update(id: string, user: User) {
 
-        let docRef = await getFirestore().collection('users').doc(userId);
+        let docRef = await getFirestore().collection('users').doc(id);
 
         if ((await docRef.get()).exists) {
 
@@ -42,14 +41,12 @@ export class UserService {
                 nome: user.nome,
                 email: user.email
             });
-
-            return 'Usuário atualizado com sucesso!';
         } else {
             throw new NotFoundError("Usuário não encontrado");
         }
     }
 
-    async delete(userId: string) {
-        await getFirestore().collection('users').doc(userId).delete();
+    async delete(id: string) {
+        await getFirestore().collection('users').doc(id).delete();
     }
 }

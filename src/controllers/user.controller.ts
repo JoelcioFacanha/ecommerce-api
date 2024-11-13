@@ -9,15 +9,18 @@ export class UserController {
 
     static async getUserById(req: Request, res: Response, next: NextFunction) {
         let userId = req.params.id;
-        res.send(new UserService().getUserById(userId));
+        res.send(await new UserService().getUserById(userId));
     }
 
     static async save(req: Request, res: Response, next: NextFunction) {
-        res.status(201).send(await new UserService().save(req.body as User));
+        await new UserService().save(req.body as User)
+        res.status(201).send({ message: 'Usuário criado com sucesso!' });
+
     }
 
     static async update(req: Request, res: Response, next: NextFunction) {
-        res.send(new UserService().update(req.params.id, req.body as User));
+        await new UserService().update(req.params.id, req.body as User)
+        res.send({ message: 'Usuário alterado com sucesso' });
     }
 
     static async delete(req: Request, res: Response, next: NextFunction) {
