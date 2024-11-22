@@ -2,7 +2,7 @@ import { EmailAlreadyExistsError } from "../errors/email-already-exists.error";
 import { UnauthorizedError } from "../errors/unauthorized.error";
 import { User } from "../models/user.model";
 import { getAuth, UpdateRequest, UserRecord } from "firebase-admin/auth";
-import { getAuth as getAuthFirebase, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { getAuth as getFirebaseAuth, sendPasswordResetEmail, signInWithEmailAndPassword, UserCredential } from 'firebase/auth';
 
 export class AuthService {
     async create(user: User): Promise<UserRecord> {
@@ -32,7 +32,7 @@ export class AuthService {
     }
 
     async login(email: string, password: string): Promise<UserCredential> {
-        return await signInWithEmailAndPassword(getAuthFirebase(), email, password)
+        return await signInWithEmailAndPassword(getFirebaseAuth(), email, password)
             .catch(err => {
                 if (err.code === "auth/invalid-credential")
                     throw new UnauthorizedError();
@@ -43,5 +43,9 @@ export class AuthService {
 
     async delete(id: string) {
         await getAuth().deleteUser(id);
+    }
+
+    async recovery(email: string) {
+        await sendPasswordResetEmail(getFirebaseAuth(), email);
     }
 }
