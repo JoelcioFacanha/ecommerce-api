@@ -41,6 +41,7 @@ export class UserService {
         _user.nome = user.nome;
         _user.email = user.email;
 
+        await this._authService.update(id, user);
         await this._repository.update(_user);
     }
 
