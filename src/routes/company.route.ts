@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { CompanyController } from '../controllers/company.controller';
 import asyncHandler from 'express-async-handler';
 import { celebrate, Segments } from 'celebrate';
-import { newUserSchema, updateUserSchema } from '../models/user.model';
+import { newCompanySchema, updateCompanySchema } from '../models/company.model';
 
 export const companyRoutes = Router();
 
-companyRoutes.get('/company', asyncHandler(CompanyController.getAll));
-companyRoutes.get('/company/:id', asyncHandler(CompanyController.getUserById));
-companyRoutes.post('/company', celebrate({ [Segments.BODY]: newUserSchema }), asyncHandler(CompanyController.save));
-companyRoutes.put('/company/:id', celebrate({ [Segments.BODY]: updateUserSchema }), asyncHandler(CompanyController.update));
+companyRoutes.get('/companies', asyncHandler(CompanyController.getAll));
+companyRoutes.get('/companies/:id', asyncHandler(CompanyController.getUserById));
+companyRoutes.post('/companies', celebrate({ [Segments.BODY]: newCompanySchema }), asyncHandler(CompanyController.save));
+companyRoutes.put('/companies/:id', celebrate({ [Segments.BODY]: updateCompanySchema }), asyncHandler(CompanyController.update));

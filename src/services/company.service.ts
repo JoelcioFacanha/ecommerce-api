@@ -24,12 +24,12 @@ export class CompanyService {
     }
 
     async save(company: Company) {
-        await this._repository.update(company);
+        await this._repository.save(company);
     }
 
     async update(id: string, company: Company) {
         const _company = await this._repository.getById(id);
-
+        console.log(_company);
         if (!_company)
             throw new NotFoundError("Empresa não encontrada");
 
