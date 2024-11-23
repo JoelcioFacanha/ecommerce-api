@@ -14,7 +14,7 @@ export class CompanyService {
         return await this._repository.getAll();
     }
 
-    async getById(id: string): Promise<Company | null> {
+    async getById(id: string): Promise<Company> {
         const company = await this._repository.getById(id);
 
         if (!company)
@@ -28,10 +28,7 @@ export class CompanyService {
     }
 
     async update(id: string, company: Company) {
-        const _company = await this._repository.getById(id);
-        console.log(_company);
-        if (!_company)
-            throw new NotFoundError("Empresa não encontrada");
+        const _company = await this.getById(id);
 
         _company.logomarca = company.logomarca;
         _company.cpfCnpj = company.cpfCnpj;

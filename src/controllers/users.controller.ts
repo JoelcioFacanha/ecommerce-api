@@ -2,14 +2,14 @@ import { Request, Response } from "express";
 import { User } from "../models/user.model";
 import { UserService } from "../services/user.service";
 
-export class UserController {
+export class UsersController {
     static async getAll(req: Request, res: Response) {
         res.send(await new UserService().getAll());
     }
 
     static async getUserById(req: Request, res: Response) {
         let userId = req.params.id;
-        res.send(await new UserService().getUserById(userId));
+        res.send(await new UserService().getById(userId));
     }
 
     static async save(req: Request, res: Response) {

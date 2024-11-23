@@ -17,7 +17,7 @@ export class UserService {
         return await this._repository.getAll();
     }
 
-    async getUserById(id: string): Promise<User | null> {
+    async getById(id: string): Promise<User> {
         const user = await this._repository.getById(id);
 
         if (!user)
@@ -33,10 +33,7 @@ export class UserService {
     }
 
     async update(id: string, user: User) {
-        const _user = await this._repository.getById(id);
-
-        if (!_user)
-            throw new NotFoundError("Usuário não encontrado");
+        const _user = await this.getById(id);
 
         _user.nome = user.nome;
         _user.email = user.email;

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { CompanyService } from "../services/company.service";
 import { Company } from "../models/company.model";
 
-export class CompanyController {
+export class CompaniesController {
     static async getAll(req: Request, res: Response) {
         res.send(await new CompanyService().getAll());
     }

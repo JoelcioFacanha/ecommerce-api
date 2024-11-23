@@ -15,7 +15,7 @@ export const auth = (app: express.Express) => {
         if (token) {
             try {
                 const decodeIdToken = await getAuth().verifyIdToken(token, true);
-                const user = await new UserService().getUserById(decodeIdToken.uid)
+                const user = await new UserService().getById(decodeIdToken.uid)
 
                 if (!user)
                     return next(new ForbiddenError());
