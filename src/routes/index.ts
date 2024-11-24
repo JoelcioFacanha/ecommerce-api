@@ -3,6 +3,7 @@ import { usersRoutes } from './users.route';
 import { authRoutes } from './auth.route';
 import { companiesRoutes } from './companies.route';
 import { categoriesRoutes } from './categories.route';
+import { productsRoutes } from './products.route';
 
 export const routes = (app: express.Express) => {
     app.use(express.json());
@@ -10,4 +11,5 @@ export const routes = (app: express.Express) => {
     app.use(usersRoutes);
     app.use(companiesRoutes);
     app.use(categoriesRoutes);
+    app.use(productsRoutes);
 }
