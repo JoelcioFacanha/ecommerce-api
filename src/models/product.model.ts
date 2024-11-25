@@ -1,5 +1,5 @@
 import { Joi } from "celebrate";
-import { Category } from "./category.model";
+import { Category } from "./category.model.js";
 
 export type Product = {
     id?: string,

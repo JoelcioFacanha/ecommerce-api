@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import { celebrate, Segments } from 'celebrate';
-import { newProductSchema, updateProductSchema } from '../models/product.model';
-import { ProductsController } from '../controllers/products.controller';
+import { newProductSchema, updateProductSchema } from '../models/product.model.js';
+import { ProductsController } from '../controllers/products.controller.js';
 
 export const productsRoutes = Router();
 

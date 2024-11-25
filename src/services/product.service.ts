@@ -1,7 +1,7 @@
-import { NotFoundError } from "../errors/not-found.error";
-import { Product } from "../models/product.model";
-import { CategoryRepository } from "../repositories/category.repository";
-import { ProductRepository } from "../repositories/product.repository";
+import { NotFoundError } from "../errors/not-found.error.js";
+import { Product } from "../models/product.model.js";
+import { CategoryRepository } from "../repositories/category.repository.js";
+import { ProductRepository } from "../repositories/product.repository.js";
 
 export class ProductService {
 

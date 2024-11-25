@@ -1,6 +1,6 @@
-import { NotFoundError } from "../errors/not-found.error";
-import { Category } from "../models/category.model";
-import { CategoryRepository } from "../repositories/category.repository";
+import { NotFoundError } from "../errors/not-found.error.js";
+import { Category } from "../models/category.model.js";
+import { CategoryRepository } from "../repositories/category.repository.js";
 
 export class CategoryService {
 
