@@ -1,7 +1,7 @@
 import { NotFoundError } from "../errors/not-found.error.js";
-import { ValidationErro } from "../errors/validation.error.js";
 import { Company } from "../models/company.model.js";
 import { CompanyRepository } from "../repositories/company.repository.js";
+import { isValidUrl } from "../utils/validation.utils.js";
 import { UploadFileService } from "./upload-file.service.js";
 
 export class CompanyService {
@@ -36,7 +36,7 @@ export class CompanyService {
     async update(id: string, company: Company) {
         const _company = await this.getById(id);
 
-        if (!this.isValidUrl(company.logomarca))
+        if (!isValidUrl(company.logomarca))
             _company.logomarca = await this._uploadService.uploadTeste(company.logomarca);
 
         _company.cpfCnpj = company.cpfCnpj;
@@ -50,22 +50,5 @@ export class CompanyService {
         _company.ativa = company.ativa;
 
         await this._repository.update(_company);
-    }
-
-    private isValidUrl(url: string): boolean {
-        try {
-            const _url = new URL(url);
-
-            if (_url.host !== "https://firesotre.googleapis.com")
-                throw new ValidationErro("URL de origem inválida!");
-
-            console.log(_url);
-            return true;
-        } catch (error) {
-            if (error instanceof ValidationErro)
-                throw error;
-
-            return false;
-        }
     }
 }

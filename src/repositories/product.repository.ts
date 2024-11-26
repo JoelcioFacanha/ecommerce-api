@@ -1,4 +1,4 @@
-import { CollectionReference, getFirestore } from "firebase-admin/firestore";
+import { CollectionReference, getFirestore, QuerySnapshot } from "firebase-admin/firestore";
 import { Product } from "../models/product.model.js";
 
 export class ProductRepository {
@@ -10,7 +10,16 @@ export class ProductRepository {
     }
 
     async getAll() {
-        const snapshot = await this._collection.get();
+        const _snapshot = await this._collection.get();
+        return this.snapshotToArray(_snapshot);
+    }
+
+    async search(categoryId: string): Promise<Product[]> {
+        const _snapshot = await this._collection.where("categoria.id", "==", categoryId).get();
+        return this.snapshotToArray(_snapshot);
+    }
+
+    private snapshotToArray(snapshot: QuerySnapshot): Product[] {
         return snapshot.docs.map(doc => {
             return {
                 id: doc.id,
@@ -44,5 +53,10 @@ export class ProductRepository {
 
     async delete(id: string) {
         await this._collection.doc(id).delete();
+    }
+
+    async getCountByCategory(categoryId: string): Promise<number> {
+        const _snapshot = await this._collection.where("categoria.id", "==", categoryId).count().get();
+        return _snapshot.data().count;
     }
 }
